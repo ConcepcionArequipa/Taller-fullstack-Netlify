@@ -167,6 +167,9 @@
 
         listaMensajes.innerHTML = "";
         result.data.forEach(renderMensaje);
+
+        // RETO 4: Guardamos el array de mensajes en localStorage 
+        localStorage.setItem("mensajes_taller", JSON.stringify(result.data));
       } catch (error) {
         listaMensajes.innerHTML = `<p style="color:red">${error.message}</p>`;
       }
@@ -201,6 +204,12 @@
         renderMensaje(result.data);
         form.reset();
         contador.textContent = "0";
+
+        // RETO 4
+        const mensajesLocales = JSON.parse(localStorage.getItem("mensajes_taller")) || [];
+        mensajesLocales.push(result.data);
+        localStorage.setItem("mensajes_taller", JSON.stringify(mensajesLocales));
+
       } catch (error) {
         mostrarEstado(error.message, "error");
       } finally {
@@ -211,9 +220,20 @@
 
     btnCargar.addEventListener("click", cargarMensajes);
 
+    
+
+    // RETO 4: Cargar automáticamente desde localStorage al iniciar la app
+    const mensajesGuardados = localStorage.getItem("mensajes_taller");
+    if (mensajesGuardados) {
+      const mensajes = JSON.parse(mensajesGuardados);
+      listaMensajes.innerHTML = "";
+      mensajes.forEach(renderMensaje); 
+    }
+
     // ESCUCHAR EVENTO PARA LIMPIAR LOS MENSAJES EN PANTALLA
     btnLimpiar.addEventListener("click", () => {
         listaMensajes.innerHTML = ""; 
+        localStorage.removeItem("mensajes_taller"); 
     });
 
   </script>
