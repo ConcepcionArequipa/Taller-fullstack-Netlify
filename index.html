@@ -91,6 +91,10 @@
         <label for="mensaje">Mensaje</label>
         <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe un mensaje..." required></textarea>
 
+
+        <div style="font-size: 0.85rem; color: #64748b; text-align: right; margin-top: 4px;"> Caracteres: <span id="contador">0</span>
+        </div>
+
         <button id="btnEnviar" type="submit">Enviar al backend</button>
       </form>
       <div id="estado" class="estado"></div>
@@ -111,6 +115,15 @@
     const btnCargar = document.getElementById("btnCargar");
 
     const API_BASE = "/api";
+
+    // RECOGER ELEMENTOS PARA EL CONTADOR
+    const mensajeInput = document.getElementById("mensaje");
+    const contador = document.getElementById("contador");
+
+    // ESCUCHAR EN TIEMPO REAL CUANDO EL USUARIO escriba
+    mensajeInput.addEventListener("input", () => {
+      contador.textContent = mensajeInput.value.length;
+    });
 
     function mostrarEstado(texto, tipo) {
       estado.textContent = texto;
@@ -173,6 +186,7 @@
         mostrarEstado(result.message, "ok");
         renderMensaje(result.data);
         form.reset();
+        contador.textContent = "0";
       } catch (error) {
         mostrarEstado(error.message, "error");
       } finally {
