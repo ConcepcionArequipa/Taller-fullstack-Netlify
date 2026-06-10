@@ -89,13 +89,13 @@
         <input id="email" name="email" type="email" placeholder="correo@ejemplo.com" required />
 
         <label for="mensaje">Mensaje</label>
-        <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe un mensaje..." required></textarea>
+        <textarea id="mensaje" name="mensaje" rows="5" placeholder="Escribe un mensaje..." minlength="10" required></textarea>
 
 
         <div style="font-size: 0.85rem; color: #64748b; text-align: right; margin-top: 4px;"> Caracteres: <span id="contador">0</span>
         </div>
 
-        <button id="btnEnviar" type="submit">Enviar al backend</button>
+        <button id="btnEnviar" type="submit" disabled style="background: #94a3b8;">El mensaje debe tener al menos 10 caracteres</button>
       </form>
       <div id="estado" class="estado"></div>
     </section>
@@ -122,7 +122,19 @@
 
     // ESCUCHAR EN TIEMPO REAL CUANDO EL USUARIO escriba
     mensajeInput.addEventListener("input", () => {
-      contador.textContent = mensajeInput.value.length;
+        const longitud = mensajeInput.value.length;
+        contador.textContent = longitud;
+
+        // Validacion del reto 2
+        if (longitud < 10) {
+            btnEnviar.disabled = true;
+            btnEnviar.style.backgroundColor = "#94a3b8"; // Cambia el color del botón a gris
+            btnEnviar.textContent = "El mensaje debe de tener al menos 10 caracteres";
+        } else {
+            btnEnviar.disabled = false;
+            btnEnviar.style.backgroundColor = "#0f766e"; // Cambia el color del botón a su color 
+            btnEnviar.textContent = "Enviar al backend";
+        }
     });
 
     function mostrarEstado(texto, tipo) {
